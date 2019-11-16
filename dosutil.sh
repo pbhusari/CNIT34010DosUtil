@@ -98,9 +98,6 @@ command() {
 			esac
 			;;
 		ren)
-			
-			# Thicc Descision Tree
-			# Come back to it later
 			verify "$ARG2"
 			TYPE=$?
 			case $TYPE in
@@ -127,19 +124,19 @@ command() {
 			esac
 			;;
 		move)
-			verify $ARG2
-			TYPE=$ARG2
+			verify "$ARG2"
+			TYPE=$?
 			case $TYPE in 
 				0)
 					echo "Cannot overwrite file: $ARG2"
 					return 1
 					;;
 				1|2)
-					verify $ARG1
-					TYPE=$ARG1
+					verify "$ARG1"
+					TYPE=$?
 					case $TYPE in 
 						0|1)
-							if mv $ARG1 $ARG2; then
+							if mv "$ARG1" "$ARG2"; then
 								return 0
 							else
 								return 1
@@ -149,8 +146,12 @@ command() {
 							echo "Source does not exist"
 							return 1
 						;;
+					esac
 					;;
-            ;;
+			
+			esac
+			;;
+            
 		del)
 
 			verify "$ARG1"
