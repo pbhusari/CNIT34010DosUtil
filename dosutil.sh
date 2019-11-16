@@ -3,8 +3,6 @@
 # Pranav Bhusari
 # This script converts certain windows commands to unix commands
 # November 17th. 2019
-# 
-
 
 # 0 --> File
 # 1 --> Directory
@@ -47,13 +45,19 @@ command() {
 			TYPE=$?
 			case $TYPE in
 				0)
-					cat "$ARG1"
+					if cat "$ARG1"; then
+						return 0
+					else
+						return 1
+					fi
 					;;
 				1)
 					echo "This is a directory"
+					return 1
 					;;
 				2)
 					echo "File Does Not Exist"
+					return 1
 					;;
 			esac
 			;;
@@ -67,18 +71,18 @@ command() {
 					return 1
 					;;
 				1|2)
-					verify $ARG1
+					verify "$ARG1"
 					TYPE=$?
 					case $TYPE in
 						0)
-							if cp $ARG1 $ARG2; then 
+							if cp "$ARG1" "$ARG2"; then 
 								return 0
 							else
 								return 1
 							fi	
 							;;
 						1)
-							if cp -r $ARG1 $ARG2; then 
+							if cp -r "$ARG1" "$ARG2"; then 
 								return 0
 							else
 								return 1
@@ -97,22 +101,74 @@ command() {
 			
 			# Thicc Descision Tree
 			# Come back to it later
+			verify "$ARG2"
+			TYPE=$?
+			case $TYPE in
+				0|1)
+					echo "Name already Exists"
+					return 1
+					;;
+				2)		
+					verify "$ARG1"
+					TYPE=$?
+					case $TYPE in
+						0|1)
+							if mv "$ARG1" "$ARG2"; then
+								return 0
+							else
+								return 1
+							fi
+							;;
+						2)
+							echo "Source does not exist"
+							return 1
+							;;
+					esac
+			esac
 			;;
 		move)
-
-			# Thicc Descision Tree
-			# Come back to it later
-                        ;;
+			verify $ARG2
+			TYPE=$ARG2
+			case $TYPE in 
+				0)
+					echo "Cannot overwrite file: $ARG2"
+					return 1
+					;;
+				1|2)
+					verify $ARG1
+					TYPE=$ARG1
+					case $TYPE in 
+						0|1)
+							if mv $ARG1 $ARG2; then
+								return 0
+							else
+								return 1
+							fi
+						;;
+						2)
+							echo "Source does not exist"
+							return 1
+						;;
+					;;
+            ;;
 		del)
 
 			verify "$ARG1"
 			TYPE=$?
 			case $TYPE in
 				0)
-					rm "$ARG1" > /dev/null
+					if rm "$ARG1" > /dev/null; then
+						return 0
+					else
+						return 1
+					fi
 					;;
 				1)
-					rm -r "$ARG1" > /dev/null
+					if rm -r "$ARG1" > /dev/null; then
+						return 0
+					else
+						return 1
+					fi
 					;;
 				2)
 					echo "File not found!"
@@ -131,8 +187,6 @@ command() {
 			echo "move [SOURCE] [DESTINATION]	move a file"
 			echo "del [FILE]  			delete a file"
 			echo "help  				display a list of commands"
-		
-				
 	esac	
 	
 }
