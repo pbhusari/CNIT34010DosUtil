@@ -59,8 +59,39 @@ command() {
 			;;
 
 		copy)
-			# Thicc Descision Tree
-			# Come back to it later
+			verify "$ARG2"
+			TYPE=$?
+			case $TYPE in
+				0)
+					echo "Cannot overwrite file: $ARG2"
+					return 1
+					;;
+				1|2)
+					verify $ARG1
+					TYPE=$?
+					case $TYPE in
+						0)
+							if cp $ARG1 $ARG2; then 
+								return 0
+							else
+								return 1
+							fi	
+							;;
+						1)
+							if cp -r $ARG1 $ARG2; then 
+								return 0
+							else
+								return 1
+							fi	
+							;;
+						2)
+														
+							echo "File Does not exist"
+							return 1
+							;;
+					esac
+					;;
+			esac
 			;;
 		ren)
 			
@@ -108,7 +139,7 @@ command() {
 
 
 command "$1" "$2" "$3"
-
+echo $?
 
 
 
