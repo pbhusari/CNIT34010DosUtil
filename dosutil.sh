@@ -43,38 +43,71 @@ command() {
 			echo "Bhusari Pranav"
 			;;
 		type)
-			verify $ARG1
+			verify "$ARG1"
 			TYPE=$?
-			if [ $TYPE -eq 0 ]; then
-				cat $ARG1
-			elif [ $TYPE -eq 1 ]; then
-				echo "This is a directory"
-			else 
-				echo "File Does Not Exist"
-			fi
+			case $TYPE in
+				0)
+					cat "$ARG1"
+					;;
+				1)
+					echo "This is a directory"
+					;;
+				2)
+					echo "File Does Not Exist"
+					;;
+			esac
 			;;
-		copy)
-			# Do not copy if the ARG1 DNE
-			# Do not copy if ARG2 is a file
-			# Do not copy if ARG2 is a directory
 
-			verify $ARG1
-			TYPE=$?
-			if [ $TYPE -eq 0 ]; then
-				cat $ARG1
-			elif [ $TYPE -eq 1 ]; then
-				echo "This is a directory"
-			else 
-				echo "File Does Not Exist"
-			fi
+		copy)
+			# Thicc Descision Tree
+			# Come back to it later
 			;;
+		ren)
+			
+			# Thicc Descision Tree
+			# Come back to it later
+			;;
+		move)
+
+			# Thicc Descision Tree
+			# Come back to it later
+                        ;;
+		del)
+
+			verify "$ARG1"
+			TYPE=$?
+			case $TYPE in
+				0)
+					rm "$ARG1" > /dev/null
+					;;
+				1)
+					rm -r "$ARG1" > /dev/null
+					;;
+				2)
+					echo "File not found!"
+					;;
+
+			esac
+			;;
+
+		help|*)
+			echo "CNIT 34010 - Dosutil Phase 1"
+			echo "============================"
+			echo "author				output author's name in the form last, first"
+			echo "type [FILE]			output the content of the file in the first parameter"
+			echo "copy [SOURCE] [DESTINATION]	copy a file"
+			echo "ren [FILE] [NEWNAME]		rename a file"
+			echo "move [SOURCE] [DESTINATION]	move a file"
+			echo "del [FILE]  			delete a file"
+			echo "help  				display a list of commands"
+		
 				
 	esac	
 	
 }
 
 
-command $1 $2 $3
+command "$1" "$2" "$3"
 
 
 
