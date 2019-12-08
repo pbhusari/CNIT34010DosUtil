@@ -342,7 +342,7 @@ if ! test -z $1 ; then
 		echo "Command executed with errors"
 	fi
 else
-	select COMMAND in type copy ren del move help copy! move! ren! whereami cd sort author exit
+	select COMMAND in type copy ren del move help copy! move! ren! whereami cd sort author exit sort
 	do
 			# Commands that require 1+ args
 			if 	[[ $COMMAND = "type" ]] || [[ $COMMAND == "copy" ]] || [[ $COMMAND == "ren" ]] || [[ $COMMAND == "del" ]] ||  [[ $COMMAND == "move" ]] || [[ $COMMAND == "copy!" ]] || [[ $COMMAND == "move!" ]] || [[ $COMMAND == "ren!" ]] ||  [[ $COMMAND == "cd" ]]; then
