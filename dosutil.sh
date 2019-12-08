@@ -220,7 +220,7 @@ command() {
 							fi
 					 		;;
 						1)
-							if cp -rf "$ARG1" "$ARG2" > /dev/null; then
+							if cp -Trf "$ARG1" "$ARG2" > /dev/null; then
 								return 0
 							else
 								return 1
