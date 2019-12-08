@@ -203,6 +203,7 @@ command() {
 
 			esac
 			;;
+
 		copy!)
 			verify "$ARG2"
 			TYPE=$?
@@ -238,11 +239,7 @@ command() {
 			verify "$ARG2"
 			TYPE=$?
 			case $TYPE in
-				0|1)
-					echo "ERROR: $ARG2 already Exists"
-					return 1
-					;;
-				2)
+				0|1|2)
 					verify "$ARG1"
 					TYPE=$?
 					case $TYPE in
@@ -260,21 +257,17 @@ command() {
 					esac
 			esac
 			;;
+
 		move!)
 			verify "$ARG2"
 			TYPE=$?
 			case $TYPE in
-				0)
-					# "Build in handling for file/directory overwrites"
-					echo "ERROR: Cannot overwrite file: $ARG2"
-					return 1
-					;;
-				1|2)
+				0|1|2)
 					verify "$ARG1"
 					TYPE=$?
 					case $TYPE in
 						0|1)
-							if mv -f "$ARG1" "$ARG2" > /dev/null; then
+							if mv "$ARG1" "$ARG2" > /dev/null; then
 								return 0
 							else
 								return 1
@@ -289,7 +282,8 @@ command() {
 
 			esac
 			;;
-    whereami)
+
+		whereami)
       pwd
       ;;
 
@@ -362,7 +356,7 @@ else
 			fi
 
 			if [[ $COMMAND == "exit" ]]; then
-				break
+				exit 0
 			fi
 
 			command "$COMMAND" "$USERARG1" "$USERARG2"
