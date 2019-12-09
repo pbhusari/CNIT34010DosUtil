@@ -318,6 +318,9 @@ command() {
 			echo "move [SOURCE] [DESTINATION]	move a file"
 			echo "del [FILE]  			delete a file"
 			echo "help  					display a list of commands"
+			echo "copy! [SOURCE] [DESTINATION] force copy a file"
+			echo "ren! [SOURCE] [DESTINATION] force rename a file"
+			echo "move! [SOURCE] [DESTINATION] force move a file"
       ;;
 
 
